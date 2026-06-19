@@ -22,7 +22,6 @@
 - [快速开始](#-快速开始)
 - [数据库设计](#-数据库设计)
 - [API 文档](#-api-文档)
-
 - [开发说明](#-开发说明)
 - [开源协议](#-开源协议)
 
@@ -220,12 +219,10 @@ npm run dev
 | order_item | 订单明细表 |
 | address | 收货地址表 |
 | product_review | 商品评价表 |
-| efund | 退款申请表 |
+| refund | 退款申请表 |
 | banner | 轮播图表 |
-| 
-otice | 公告表 |
-| 
-otification | 通知表 |
+| notice | 公告表 |
+| notification | 通知表 |
 | ai_config | AI 配置表 |
 | operation_log | 操作日志表 |
 | admin | 管理员表 |
