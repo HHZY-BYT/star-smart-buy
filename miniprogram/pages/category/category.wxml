@@ -1,0 +1,83 @@
+<!--pages/category/category.wxml-->
+<view class="category-page">
+  <!-- 分类侧边栏 -->
+  <scroll-view class="category-sidebar" scroll-y>
+    <view 
+      class="sidebar-item {{currentCategory.id === item.id ? 'active' : ''}}" 
+      wx:for="{{categories}}" 
+      wx:key="id"
+      bindtap="onCategorySelect"
+      data-category="{{item}}"
+    >
+      <text class="sidebar-icon">{{item.icon === 'Cellphone' ? '📱' : item.icon === 'Monitor' ? '💻' : item.icon === 'Camera' ? '📷' : item.icon === 'Watch' ? '⌚' : item.icon === 'Headset' ? '🎧' : item.icon === 'Connection' ? '🔌' : '📦'}}</text>
+      <text class="sidebar-name">{{item.name}}</text>
+    </view>
+  </scroll-view>
+
+  <!-- 商品列表 -->
+  <scroll-view class="product-content" scroll-y>
+    <!-- 子分类标签 -->
+    <view class="sub-category-bar" wx:if="{{subCategories.length > 0}}">
+      <scroll-view class="sub-scroll" scroll-x>
+        <view 
+          class="sub-chip {{!currentSubCategory ? 'active' : ''}}"
+          bindtap="onSubCategoryAll"
+        >
+          <text>全部</text>
+        </view>
+        <view 
+          class="sub-chip {{currentSubCategory && currentSubCategory.id === item.id ? 'active' : ''}}" 
+          wx:for="{{subCategories}}" 
+          wx:key="id"
+          bindtap="onSubCategorySelect"
+          data-category="{{item}}"
+        >
+          <text>{{item.name}}</text>
+        </view>
+      </scroll-view>
+    </view>
+
+    <!-- 分类标题 -->
+    <view class="category-header">
+      <text class="category-title">{{currentSubCategory ? currentSubCategory.name : currentCategory.name}}</text>
+      <text class="category-count">共{{products.length}}件</text>
+    </view>
+    
+    <!-- 商品网格 -->
+    <view class="product-grid">
+      <view 
+        class="product-item" 
+        wx:for="{{products}}" 
+        wx:key="id"
+        bindtap="onProductTap"
+        data-id="{{item.id}}"
+      >
+        <image class="product-image" src="{{item.images}}" mode="aspectFill"></image>
+        <view class="product-info">
+          <text class="product-name">{{item.name}}</text>
+          <view class="product-bottom">
+            <text class="product-price">¥{{item.priceText}}</text>
+            <text class="product-category" wx:if="{{item.categoryName}}">{{item.categoryName}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 加载状态 -->
+    <view class="loading-wrap" wx:if="{{loading}}">
+      <view class="loading-spinner"></view>
+      <text>加载中...</text>
+    </view>
+
+    <!-- 没有更多 -->
+    <view class="no-more" wx:if="{{!hasMore && products.length > 0}}">
+      <text>— 没有更多了 —</text>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{!loading && products.length === 0}}">
+      <text class="empty-icon">📭</text>
+      <text class="empty-text">该分类暂无商品</text>
+    </view>
+  </scroll-view>
+</view>

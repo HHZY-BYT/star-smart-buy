@@ -1,0 +1,176 @@
+/* pages/search/search.wxss */
+.search-page {
+  background-color: #f5f5f5;
+}
+
+/* 搜索栏 */
+.search-bar {
+  display: flex;
+  align-items: center;
+  padding: 20rpx;
+  background-color: #fff;
+}
+
+.search-input-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background-color: #f5f5f5;
+  border-radius: 40rpx;
+  padding: 16rpx 20rpx;
+}
+
+.search-icon {
+  font-size: 32rpx;
+  margin-right: 16rpx;
+}
+
+.search-input {
+  flex: 1;
+  font-size: 28rpx;
+}
+
+.clear-icon {
+  font-size: 32rpx;
+  color: #999;
+  padding: 8rpx;
+}
+
+.search-btn {
+  padding: 16rpx 30rpx;
+  background-color: var(--primary-color);
+  color: #fff;
+  border-radius: 40rpx;
+  margin-left: 20rpx;
+  font-size: 28rpx;
+}
+
+/* 未搜索状态 */
+.search-default {
+  padding: 20rpx;
+}
+
+/* 区块头部 */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.section-title {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.clear-btn {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 关键词列表 */
+.keyword-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.keyword-item {
+  padding: 12rpx 24rpx;
+  background-color: #fff;
+  border-radius: 8rpx;
+  margin-right: 16rpx;
+  margin-bottom: 16rpx;
+  font-size: 26rpx;
+  color: #666;
+}
+
+.keyword-item.hot {
+  background-color: rgba(24, 144, 255, 0.1);
+  color: var(--primary-color);
+}
+
+/* 搜索结果 */
+.search-result {
+  padding: 20rpx;
+}
+
+.result-count {
+  font-size: 24rpx;
+  color: #999;
+  margin-bottom: 20rpx;
+}
+
+/* 商品列表 */
+.product-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.product-item {
+  width: 48%;
+  background-color: #fff;
+  border-radius: 12rpx;
+  overflow: hidden;
+  margin-bottom: 20rpx;
+}
+
+.product-image {
+  width: 100%;
+  height: 280rpx;
+}
+
+.product-info {
+  padding: 16rpx;
+}
+
+.product-name {
+  font-size: 26rpx;
+  color: #333;
+  height: 72rpx;
+  line-height: 36rpx;
+}
+
+.product-price {
+  margin-top: 10rpx;
+}
+
+.product-sales {
+  font-size: 22rpx;
+  color: #999;
+  margin-top: 8rpx;
+}
+
+/* 加载状态 */
+.loading {
+  text-align: center;
+  padding: 30rpx;
+  color: #999;
+}
+
+/* 没有更多 */
+.no-more {
+  text-align: center;
+  padding: 30rpx;
+  color: #999;
+  font-size: 24rpx;
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 100rpx 0;
+}
+
+.empty-state image {
+  width: 200rpx;
+  height: 200rpx;
+  margin-bottom: 20rpx;
+}
+
+.empty-state text {
+  color: #999;
+}

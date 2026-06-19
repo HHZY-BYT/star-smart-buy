@@ -1,0 +1,50 @@
+<!--pages/address/address.wxml-->
+<view class="address-page">
+  <!-- 地址列表 -->
+  <view class="address-list">
+    <view 
+      class="address-item card {{selectMode ? 'selectable' : ''}}" 
+      wx:for="{{addresses}}" 
+      wx:key="id"
+      bindtap="onSelectAddress"
+      data-address="{{item}}"
+    >
+      <view class="address-info">
+        <view class="address-row">
+          <text class="address-name">{{item.receiver}}</text>
+          <text class="address-phone">{{item.phone}}</text>
+          <view class="default-tag" wx:if="{{item.isDefault === 1}}">默认</view>
+        </view>
+        <text class="address-detail">{{item.province}}{{item.city}}{{item.district}}{{item.detail}}</text>
+      </view>
+      
+      <view class="address-actions" wx:if="{{!selectMode}}">
+        <view class="action-btn" wx:if="{{item.isDefault !== 1}}" bindtap="onSetDefault" data-id="{{item.id}}">
+          <text>设为默认</text>
+        </view>
+        <view class="action-btn" bindtap="onEditAddress" data-id="{{item.id}}">
+          <text>编辑</text>
+        </view>
+        <view class="action-btn delete" bindtap="onDeleteAddress" data-id="{{item.id}}">
+          <text>删除</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{!loading && addresses.length === 0}}">
+      <text>📍</text>
+      <text>暂无收货地址</text>
+    </view>
+
+    <!-- 加载状态 -->
+    <view class="loading" wx:if="{{loading}}">
+      <text>加载中...</text>
+    </view>
+  </view>
+
+  <!-- 新增地址按钮 -->
+  <view class="add-btn safe-area-bottom" bindtap="onAddAddress">
+    <text>+ 新增收货地址</text>
+  </view>
+</view>

@@ -1,0 +1,262 @@
+/* pages/cart/cart.wxss */
+.cart-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f5f7fa;
+}
+
+/* 购物车列表 */
+.cart-list {
+  flex: 1;
+  padding: 20rpx;
+}
+
+/* 购物车项 */
+.cart-item {
+  display: flex;
+  align-items: center;
+  padding: 24rpx;
+  margin-bottom: 20rpx;
+  background: linear-gradient(135deg, #fff 0%, #fefefe 100%);
+  border-radius: 20rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.04);
+  transition: all 0.3s ease;
+}
+
+.cart-item:active {
+  transform: scale(0.99);
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
+}
+
+/* 选择框 */
+.item-checkbox {
+  padding-right: 20rpx;
+}
+
+.checkbox {
+  width: 44rpx;
+  height: 44rpx;
+  border: 2rpx solid #ddd;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.checkbox.checked {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 4rpx 12rpx rgba(79, 172, 254, 0.4);
+}
+
+/* 商品内容 */
+.item-content {
+  display: flex;
+  flex: 1;
+}
+
+.item-image {
+  width: 180rpx;
+  height: 180rpx;
+  border-radius: 16rpx;
+  margin-right: 24rpx;
+}
+
+.item-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.item-name {
+  font-size: 30rpx;
+  color: #222;
+  font-weight: 500;
+  line-height: 1.4;
+  height: 84rpx;
+}
+
+.item-spec {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 8rpx;
+}
+
+.item-price {
+  font-size: 34rpx;
+  font-weight: 600;
+  color: #ff6b6b;
+  margin-top: 16rpx;
+}
+
+/* 数量控制 */
+.item-quantity {
+  display: flex;
+  align-items: center;
+  margin-left: 20rpx;
+}
+
+.quantity-btn {
+  width: 56rpx;
+  height: 56rpx;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+  border-radius: 12rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 32rpx;
+  color: #555;
+  transition: all 0.2s ease;
+}
+
+.quantity-btn:active {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  color: #fff;
+}
+
+.quantity-num {
+  width: 70rpx;
+  text-align: center;
+  font-size: 30rpx;
+  color: #333;
+  font-weight: 500;
+}
+
+/* 删除按钮 */
+.item-delete {
+  padding: 12rpx 24rpx;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
+  color: #fff;
+  border-radius: 12rpx;
+  font-size: 26rpx;
+  margin-left: 20rpx;
+  box-shadow: 0 4rpx 12rpx rgba(255, 107, 107, 0.3);
+}
+
+/* 底部结算栏 */
+.cart-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24rpx 32rpx;
+  background: linear-gradient(135deg, #fff 0%, #fefefe 100%);
+  border-top: 1rpx solid #f0f0f0;
+  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.04);
+}
+
+.footer-left {
+  display: flex;
+  align-items: center;
+}
+
+.select-all {
+  display: flex;
+  align-items: center;
+}
+
+.select-all .checkbox {
+  margin-right: 12rpx;
+}
+
+.select-all text {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: 500;
+}
+
+.edit-btn {
+  margin-left: 32rpx;
+  font-size: 28rpx;
+  color: #4facfe;
+  font-weight: 500;
+}
+
+.footer-right {
+  display: flex;
+  align-items: center;
+}
+
+.total-info {
+  margin-right: 24rpx;
+}
+
+.total-label {
+  font-size: 26rpx;
+  color: #666;
+}
+
+.total-price {
+  font-size: 36rpx;
+  color: #ff6b6b;
+  font-weight: 600;
+}
+
+.checkout-btn {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  color: #fff;
+  padding: 24rpx 56rpx;
+  border-radius: 48rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+  box-shadow: 0 8rpx 24rpx rgba(79, 172, 254, 0.4);
+  transition: all 0.2s ease;
+}
+
+.checkout-btn:active {
+  transform: scale(0.96);
+}
+
+.checkout-btn.disabled {
+  background: linear-gradient(135deg, #e8e8e8 0%, #d0d0d0 100%);
+  box-shadow: none;
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 120rpx 40rpx;
+}
+
+.empty-state text:first-child {
+  font-size: 100rpx;
+  margin-bottom: 32rpx;
+}
+
+.empty-state text:nth-child(2) {
+  font-size: 30rpx;
+  color: #999;
+  margin-bottom: 40rpx;
+}
+
+/* 加载状态 */
+.loading {
+  text-align: center;
+  padding: 40rpx;
+  color: #999;
+}
+
+/* 按钮样式 */
+.btn-primary {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  color: #fff;
+  border: none;
+  border-radius: 48rpx;
+  padding: 24rpx 48rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+  box-shadow: 0 8rpx 24rpx rgba(79, 172, 254, 0.4);
+}
+
+.btn-primary:active {
+  transform: scale(0.96);
+}
+
+.btn-small {
+  padding: 16rpx 32rpx;
+  font-size: 26rpx;
+}

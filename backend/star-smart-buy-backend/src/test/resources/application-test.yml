@@ -1,0 +1,42 @@
+# ==================== 测试环境配置 ====================
+spring:
+  application:
+    name: star-smart-buy-backend-test
+
+  # 使用 H2 内存数据库进行测试
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb;MODE=MySQL;DATABASE_TO_UPPER=false;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+
+  # 配置 SQL 初始化
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:sql/star_smart_buy_test.sql
+
+  # 关闭 Redis（测试不需要）
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+
+# MyBatis-Plus
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# JWT
+jwt:
+  secret: test-secret-key-for-unit-tests-only-test
+  expiration: 86400000
+
+# 日志
+logging:
+  level:
+    com.star.smartbuy: debug

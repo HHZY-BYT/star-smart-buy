@@ -1,0 +1,65 @@
+# ==================== 服务器配置 ====================
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+# ==================== Spring 配置 ====================
+spring:
+  application:
+    name: star-smart-buy-backend
+
+  # 文件上传配置
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 10MB
+
+  # 数据源配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3307/star_smart_buy?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: 123456
+
+  # Redis 配置
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password:
+      database: 0
+      timeout: 5000ms
+
+  # Jackson 配置
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+    serialization:
+      write-dates-as-timestamps: false
+
+
+
+# ==================== MyBatis-Plus 配置 ====================
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.star.smartbuy.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# ==================== JWT 配置 ====================
+jwt:
+  secret: starSmartBuySecretKey2024StarSmartBuySecretKey2024
+  expiration: 86400000  # 24小时（毫秒）
+
+# =================️ 日志配置 ====================
+logging:
+  level:
+    com.star.smartbuy: debug
+    com.star.smartbuy.mapper: debug
+
+# ==================== 文件上传配置 ====================
+file:
+  upload-dir: uploads
+  base-url: http://localhost:8080/api

@@ -1,0 +1,61 @@
+<!--pages/review/review.wxml-->
+<view class="review-page">
+  <!-- 订单商品 -->
+  <view class="goods-section card" wx:if="{{items.length > 0}}">
+    <view class="section-title">评价商品</view>
+    <view class="goods-item" wx:for="{{items}}" wx:key="id">
+      <view class="goods-info">
+        <text class="goods-name">{{item.productName}}</text>
+        <text class="goods-price">¥{{item.priceText}} x{{item.quantity}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 评分 -->
+  <view class="rating-section card">
+    <view class="section-title">商品评分</view>
+    <view class="rating-stars">
+      <text class="star {{rating >= index + 1 ? 'active' : ''}}" 
+        wx:for="{{5}}" wx:key="index" 
+        bindtap="onRatingChange" 
+        data-rating="{{index + 1}}">
+        {{rating >= index + 1 ? '★' : '☆'}}
+      </text>
+      <text class="rating-text">{{rating}}分</text>
+    </view>
+  </view>
+
+  <!-- 评价内容 -->
+  <view class="content-section card">
+    <view class="section-title">评价内容</view>
+    <textarea class="review-textarea" 
+      placeholder="说说你对商品的看法吧..." 
+      value="{{content}}" 
+      bindinput="onContentInput"
+      maxlength="500"
+    ></textarea>
+    <text class="char-count">{{content.length}}/500</text>
+  </view>
+
+  <!-- 上传图片 -->
+  <view class="image-section card">
+    <view class="section-title">上传图片 <text class="image-count">（{{images.length}}/{{maxImages}}）</text></view>
+    <view class="image-list">
+      <view class="image-item" wx:for="{{images}}" wx:key="index">
+        <image class="review-image" src="{{item}}" mode="aspectFill" bindtap="onPreviewImage" data-url="{{item}}"></image>
+        <view class="image-delete" catchtap="onDeleteImage" data-index="{{index}}">x</view>
+      </view>
+      <view class="image-add" wx:if="{{images.length < maxImages}}" bindtap="onChooseImage">
+        <text class="add-icon">+</text>
+        <text class="add-text">添加图片</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 提交按钮 -->
+  <view class="submit-section">
+    <button class="submit-btn" bindtap="onSubmit" disabled="{{submitting}}">
+      {{submitting ? '提交中...' : '提交评价'}}
+    </button>
+  </view>
+</view>

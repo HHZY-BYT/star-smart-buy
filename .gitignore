@@ -1,0 +1,43 @@
+﻿# === 全局忽略规则 ===
+
+# 后端 Java 编译产物
+**/target/
+**/build/
+
+# 前端构建产物
+**/dist/
+**/.vite/
+
+# 依赖目录
+**/node_modules/
+
+# 上传文件（图片等）
+**/uploads/
+
+# IDE 配置
+**/.idea/
+**/.vscode/
+*.swp
+*.swo
+*~
+
+# 操作系统
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 环境变量
+.env
+.env.local
+.env.*.local
+
+# 微信小程序
+**/project.private.config.json
+
+# 文档工具库（非项目代码）
+docx_lib/
+
+# 临时文件
+*.log
+*.tmp
+*.bak

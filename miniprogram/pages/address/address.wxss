@@ -1,0 +1,114 @@
+/* pages/address/address.wxss */
+.address-page {
+  background-color: #f5f5f5;
+  padding: 20rpx;
+  padding-bottom: 120rpx;
+}
+
+/* 地址列表 */
+.address-list {
+  margin-bottom: 20rpx;
+}
+
+/* 地址项 */
+.address-item {
+  margin-bottom: 20rpx;
+}
+
+.address-item.selectable {
+  cursor: pointer;
+}
+
+.address-info {
+  padding-bottom: 16rpx;
+  border-bottom: 1rpx solid #e8e8e8;
+}
+
+.address-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12rpx;
+}
+
+.address-name {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+  margin-right: 20rpx;
+}
+
+.address-phone {
+  font-size: 28rpx;
+  color: #666;
+}
+
+.default-tag {
+  font-size: 22rpx;
+  color: var(--primary-color);
+  background-color: rgba(24, 144, 255, 0.1);
+  padding: 4rpx 12rpx;
+  border-radius: 4rpx;
+  margin-left: 16rpx;
+}
+
+.address-detail {
+  font-size: 26rpx;
+  color: #999;
+  line-height: 1.4;
+}
+
+/* 操作按钮 */
+.address-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 16rpx;
+}
+
+.action-btn {
+  font-size: 24rpx;
+  color: #666;
+  padding: 8rpx 20rpx;
+  margin-left: 20rpx;
+}
+
+.action-btn.delete {
+  color: #ff4d4f;
+}
+
+/* 新增按钮 */
+.add-btn {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--primary-color);
+  color: #fff;
+  text-align: center;
+  padding: 30rpx;
+  font-size: 30rpx;
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 100rpx 0;
+}
+
+.empty-state image {
+  width: 200rpx;
+  height: 200rpx;
+  margin-bottom: 20rpx;
+}
+
+.empty-state text {
+  color: #999;
+}
+
+/* 加载状态 */
+.loading {
+  text-align: center;
+  padding: 30rpx;
+  color: #999;
+}

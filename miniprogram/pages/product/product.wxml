@@ -1,0 +1,165 @@
+<!--pages/product/product.wxml-->
+<view class="product-page">
+  <!-- 加载状态 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 商品详情 -->
+  <block wx:if="{{!loading && product}}">
+    <!-- 商品图片轮播 -->
+    <swiper class="product-swiper" indicator-dots autoplay circular>
+      <swiper-item wx:for="{{product.imageList}}" wx:key="index">
+        <image 
+          class="product-image" 
+          src="{{item}}" 
+          mode="aspectFill"
+          bindtap="onPreviewImage"
+          data-src="{{item}}"
+        ></image>
+      </swiper-item>
+    </swiper>
+
+    <!-- 商品信息 -->
+    <view class="product-info card">
+      <view class="product-price-row">
+        <text class="product-price">{{product.priceText}}</text>
+        <text class="product-original-price" wx:if="{{product.originalPrice}}">{{product.originalPriceText}}</text>
+      </view>
+      <text class="product-name">{{product.name}}</text>
+      <view class="product-meta">
+        <text class="product-sales">已售 {{product.sales || 0}} 件</text>
+        <text class="product-stock">库存 {{product.stock}} 件</text>
+      </view>
+    </view>
+
+    <!-- 规格选择 -->
+    <view class="spec-section card" wx:if="{{specGroups.length > 0}}" bindtap="openSpecPopup" data-type="cart">
+      <view class="spec-label">规格</view>
+      <view class="spec-value">
+        <block wx:if="{{specGroups.length > 0}}">
+          <text wx:for="{{specGroups}}" wx:for-item="group" wx:key="groupName">
+            {{group.groupName}}: {{currentSpec[group.groupName] ? currentSpec[group.groupName].specValue : '未选'}}<text wx:if="{{index < specGroups.length - 1}}">; </text>
+          </text>
+        </block>
+        <text wx:else class="spec-placeholder">请选择规格</text>
+      </view>
+      <text class="spec-arrow">›</text>
+    </view>
+
+    <!-- 商品详情 -->
+    <view class="detail-section card">
+      <view class="section-title">商品详情</view>
+      <view class="detail-content">
+        <rich-text nodes="{{product.description}}"></rich-text>
+      </view>
+    </view>
+
+    <!-- 用户评价 -->
+    <view class="review-section card">
+      <view class="section-title">用户评价 ({{reviews.length}})</view>
+      
+      <view class="review-list" wx:if="{{reviews.length > 0}}">
+        <view class="review-item" wx:for="{{reviews}}" wx:key="id">
+          <view class="review-header">
+            <image class="review-avatar" src="{{item.userAvatar || 'https://neeko-copilot.bytedance.net/api/text_to_image?prompt=user%20avatar%20placeholder%20gray%20silhouette&image_size=square'}}"></image>
+            <text class="review-name">{{item.userName}}</text>
+            <view class="review-rating">
+              <text class="star-icon {{star <= item.rating ? 'active' : ''}}" wx:for="{{[1,2,3,4,5]}}" wx:for-item="star" wx:key="*this">{{star <= item.rating ? '★' : '☆'}}</text>
+            </view>
+          </view>
+          <text class="review-content">{{item.content}}</text>
+          <view class="admin-reply" wx:if="{{item.reply}}">
+            <text class="admin-reply-tag">商家回复：</text>
+            <text>{{item.reply}}</text>
+          </view>
+          <view class="review-images" wx:if="{{item.imageList && item.imageList.length > 0}}">
+            <image class="review-img" wx:for="{{item.imageList}}" wx:for-item="img" wx:key="*this" 
+              src="{{img}}" mode="aspectFill" bindtap="onPreviewReviewImage" data-src="{{img}}" data-urls="{{item.imageList}}"></image>
+          </view>
+          <text class="review-time">{{item.createdAt}}</text>
+        </view>
+      </view>
+      
+      <view class="empty-reviews" wx:else>
+        <text>暂无评价</text>
+      </view>
+    </view>
+  </block>
+
+  <!-- 底部操作栏 -->
+  <view class="product-footer safe-area-bottom" wx:if="{{!loading && product}}">
+    <view class="footer-icons">
+      <view class="footer-icon" bindtap="onGoHome">
+        <text>🏠</text>
+        <text class="icon-text">首页</text>
+      </view>
+      <view class="footer-icon" bindtap="onGoCart">
+        <text>🛒</text>
+        <text class="icon-text">购物车</text>
+      </view>
+    </view>
+    <view class="footer-buttons">
+      <view class="btn-cart" bindtap="openSpecPopup" data-type="cart">加入购物车</view>
+      <view class="btn-buy" bindtap="openSpecPopup" data-type="buy">立即购买</view>
+    </view>
+  </view>
+
+  <!-- 规格选择弹窗 -->
+  <view class="spec-popup {{showSpecPopup ? 'show' : ''}}" catchtouchmove="true">
+    <view class="spec-mask" bindtap="closeSpecPopup"></view>
+    <view class="spec-content">
+      <view class="spec-header">
+        <image class="spec-image" src="{{product.imageList[0]}}" mode="aspectFill"></image>
+        <view class="spec-info">
+          <text class="spec-price">{{product.priceText}}</text>
+          <text class="spec-stock">库存: {{product.stock}}</text>
+          <text class="spec-selected">
+            已选:
+            <block wx:for="{{specGroups}}" wx:for-item="group" wx:key="groupName">
+              {{currentSpec[group.groupName] ? currentSpec[group.groupName].specValue : '未选'}}<text wx:if="{{index < specGroups.length - 1}}">; </text>
+            </block>
+          </text>
+        </view>
+        <view class="spec-close" bindtap="closeSpecPopup">✕</view>
+      </view>
+      
+      <!-- 规格列表 - 按规格名分组显示 -->
+      <view class="spec-list" wx:if="{{specGroups.length > 0}}">
+        <view class="spec-group" wx:for="{{specGroups}}" wx:key="groupName" wx:for-index="groupIdx">
+          <text class="spec-group-name">{{item.groupName}}</text>
+          <view class="spec-options">
+            <view
+              class="spec-option {{option.selected ? 'selected' : ''}}"
+              wx:for="{{item.options}}"
+              wx:for-item="option"
+              wx:for-index="optIdx"
+              wx:key="id"
+              bindtap="onSelectSpec"
+              data-group-index="{{groupIdx}}"
+              data-option-index="{{optIdx}}"
+            >
+              <text>{{option.specValue}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+      
+      <!-- 数量选择 -->
+      <view class="quantity-section">
+        <text class="quantity-label">数量</text>
+        <view class="quantity-control">
+          <view class="quantity-btn" bindtap="onDecrease">-</view>
+          <text class="quantity-num">{{quantity}}</text>
+          <view class="quantity-btn" bindtap="onIncrease">+</view>
+        </view>
+      </view>
+      
+      <!-- 确认按钮 -->
+      <view class="spec-confirm btn-primary btn-block" bindtap="onConfirm">
+        <text wx:if="{{buyType === 'cart'}}">加入购物车</text>
+        <text wx:else>立即购买</text>
+      </view>
+    </view>
+  </view>
+</view>

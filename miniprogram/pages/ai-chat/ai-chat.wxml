@@ -1,0 +1,138 @@
+<!--pages/ai-chat/ai-chat.wxml-->
+<view class="chat-page">
+  <!-- 顶部渐变装饰 -->
+  <view class="header-deco">
+    <view class="deco-circle deco-1"></view>
+    <view class="deco-circle deco-2"></view>
+    <view class="deco-circle deco-3"></view>
+  </view>
+
+  <!-- 消息列表 -->
+  <scroll-view class="message-list" scroll-y scroll-into-view="{{scrollToView}}" scroll-with-animation enhanced show-scrollbar="{{false}}">
+    
+    <!-- AI欢迎消息（特殊样式） -->
+    <block wx:if="{{messages.length > 0 && messages[0].type === 'ai'}}">
+      <view id="msg-{{messages[0].id}}" class="welcome-section">
+        <view class="welcome-avatar">
+          <text class="avatar-icon">✦</text>
+        </view>
+        <view class="welcome-card">
+          <view class="welcome-title">
+            <text>星智购 AI 助手</text>
+            <view class="status-dot"></view>
+          </view>
+          <view class="welcome-content">
+            <text>{{messages[0].content}}</text>
+          </view>
+          <view class="capability-tags">
+            <view class="tag"><text class="tag-icon">🎯</text><text>智能推荐</text></view>
+            <view class="tag"><text class="tag-icon">💬</text><text>购物咨询</text></view>
+            <view class="tag"><text class="tag-icon">⚖️</text><text>产品对比</text></view>
+          </view>
+        </view>
+      </view>
+    </block>
+
+    <!-- 普通消息列表 -->
+    <view class="message-item {{item.type}}" wx:for="{{messages}}" wx:key="id"
+          id="msg-{{item.id}}" wx:if="{{index > 0}}">
+      
+      <!-- AI消息 -->
+      <block wx:if="{{item.type === 'ai'}}">
+        <view class="msg-avatar ai-avatar-wrap">
+          <text class="avatar-emoji">🤖</text>
+        </view>
+        <view class="msg-body ai-body">
+          <view class="bubble ai-bubble">
+            <text class="msg-text">{{item.content}}</text>
+          </view>
+          
+          <!-- 推荐商品卡片 -->
+          <view class="product-cards" wx:if="{{item.products && item.products.length > 0}}">
+            <view 
+              class="product-card" 
+              wx:for="{{item.products}}" 
+              wx:for-item="product"
+              wx:key="id"
+              bindtap="onProductTap"
+              data-id="{{product.id}}"
+            >
+              <image class="card-img" src="{{product.images || product.image}}" mode="aspectFill"></image>
+              <view class="card-info">
+                <text class="card-name">{{product.name}}</text>
+                <view class="card-bottom">
+                  <text class="card-price">¥{{product.priceText}}</text>
+                  <text class="card-action">查看详情 ›</text>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </block>
+
+      <!-- 用户消息 -->
+      <block wx:if="{{item.type === 'user'}}">
+        <view class="msg-body user-body">
+          <view class="bubble user-bubble">
+            <text class="msg-text">{{item.content}}</text>
+          </view>
+        </view>
+        <view class="msg-avatar user-avatar-wrap">
+          <text class="avatar-emoji">👤</text>
+        </view>
+      </block>
+    </view>
+
+    <!-- AI正在输入动画 -->
+    <view class="typing-area" wx:if="{{loading}}">
+      <view class="msg-avatar ai-avatar-wrap typing-shake">
+        <text class="avatar-emoji">🤖</text>
+      </view>
+      <view class="bubble ai-bubble typing-bubble">
+        <view class="typing-dots">
+          <view class="dot dot-1"></view>
+          <view class="dot dot-2"></view>
+          <view class="dot dot-3"></view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 底部占位 -->
+    <view style="height: 40rpx;"></view>
+  </scroll-view>
+
+  <!-- 快捷提问区域 -->
+  <view class="quick-panel" wx:if="{{!loading && messages.length <= 1}}">
+    <view class="quick-scroll">
+      <view 
+        class="quick-chip" 
+        wx:for="{{quickQuestions}}" 
+        wx:key="index"
+        bindtap="onQuickQuestion"
+        data-question="{{item.text}}"
+      >
+        <text class="chip-icon">{{item.icon}}</text>
+        <text class="chip-text">{{item.text}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部输入区 -->
+  <view class="input-panel safe-area-bottom">
+    <view class="input-inner">
+      <input 
+        class="chat-input" 
+        placeholder="问我任何关于数码产品的问题..." 
+        placeholder-class="input-placeholder"
+        value="{{inputText}}"
+        bindinput="onInput"
+        bindconfirm="onSend"
+        confirm-type="send"
+      />
+      <view class="send-btn {{inputText.trim() ? 'active' : ''}}" bindtap="onSend">
+        <view class="send-btn-bg"></view>
+        <text class="send-text">发送</text>
+      </view>
+    </view>
+  </view>
+</view>

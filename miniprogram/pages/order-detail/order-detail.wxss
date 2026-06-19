@@ -1,0 +1,283 @@
+/* pages/order-detail/order-detail.wxss */
+.order-detail-page {
+  background-color: #f5f5f5;
+  padding: 20rpx;
+  padding-bottom: 120rpx;
+}
+
+/* 加载状态 */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: #999;
+}
+
+/* 订单状态 */
+.status-section {
+  display: flex;
+  align-items: center;
+}
+
+.status-icon {
+  font-size: 60rpx;
+  margin-right: 20rpx;
+}
+
+.status-info {
+  flex: 1;
+}
+
+.status-text {
+  font-size: 36rpx;
+  font-weight: bold;
+}
+
+.status-desc {
+  font-size: 26rpx;
+  color: #999;
+  margin-top: 8rpx;
+}
+
+/* 收货地址 */
+.address-section {
+  margin-top: 20rpx;
+}
+
+.address-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.address-icon {
+  font-size: 32rpx;
+  margin-right: 12rpx;
+}
+
+.address-title {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.address-content {
+  font-size: 26rpx;
+  color: #666;
+}
+
+.address-row {
+  display: flex;
+  margin-bottom: 8rpx;
+}
+
+.address-name {
+  font-weight: bold;
+  margin-right: 20rpx;
+}
+
+.address-phone {
+  color: #666;
+}
+
+.address-detail {
+  color: #999;
+  line-height: 1.4;
+}
+
+/* 商品列表 */
+.goods-section, .info-section, .price-section {
+  margin-top: 20rpx;
+}
+
+.section-title {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+.goods-list {
+  border-top: 1rpx solid #e8e8e8;
+}
+
+.goods-item {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #e8e8e8;
+}
+
+.goods-image {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 8rpx;
+  margin-right: 16rpx;
+}
+
+.goods-info {
+  flex: 1;
+}
+
+.goods-name {
+  font-size: 28rpx;
+  color: #333;
+}
+
+.goods-spec {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 6rpx;
+}
+
+.goods-meta {
+  display: flex;
+  margin-top: 12rpx;
+}
+
+.goods-price {
+  font-size: 26rpx;
+  color: #ff4d4f;
+  margin-right: 20rpx;
+}
+
+.goods-quantity {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.goods-subtotal {
+  text-align: right;
+}
+
+.subtotal-price {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: bold;
+}
+
+/* 订单信息 */
+.info-list {
+  border-top: 1rpx solid #e8e8e8;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16rpx 0;
+  border-bottom: 1rpx solid #e8e8e8;
+}
+
+.info-label {
+  font-size: 26rpx;
+  color: #999;
+}
+
+.info-value-wrap {
+  display: flex;
+  align-items: center;
+}
+
+.info-value {
+  font-size: 26rpx;
+  color: #333;
+}
+
+.copy-btn {
+  font-size: 24rpx;
+  color: var(--primary-color);
+  margin-left: 16rpx;
+  padding: 4rpx 12rpx;
+  border: 1rpx solid var(--primary-color);
+  border-radius: 8rpx;
+}
+
+/* 价格明细 */
+.price-list {
+  border-top: 1rpx solid #e8e8e8;
+}
+
+.price-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16rpx 0;
+  border-bottom: 1rpx solid #e8e8e8;
+}
+
+.price-item:last-child {
+  border-bottom: none;
+}
+
+.price-label {
+  font-size: 26rpx;
+  color: #666;
+}
+
+.price-value {
+  font-size: 26rpx;
+  color: #333;
+}
+
+.price-item.total {
+  padding-top: 20rpx;
+}
+
+.total-price {
+  font-size: 36rpx;
+  color: #ff4d4f;
+  font-weight: bold;
+}
+
+/* 底部操作栏 */
+.footer-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  border-top: 1rpx solid #e8e8e8;
+  padding: 20rpx;
+}
+
+.footer-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.action-btn {
+  padding: 20rpx 40rpx;
+  border-radius: 40rpx;
+  font-size: 28rpx;
+  margin-left: 20rpx;
+}
+
+.action-btn.cancel {
+  background-color: #fff;
+  border: 1rpx solid #ddd;
+  color: #666;
+}
+
+.action-btn.pay {
+  background-color: #ff4d4f;
+  color: #fff;
+}
+
+.action-btn.confirm {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+.action-btn.refund {
+  background-color: #fff;
+  border: 1rpx solid #ff9500;
+  color: #ff9500;
+}
+
+.action-btn.delete {
+  background-color: #fff;
+  border: 1rpx solid #ddd;
+  color: #999;
+}

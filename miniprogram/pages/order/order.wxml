@@ -1,0 +1,75 @@
+<!--pages/order/order.wxml-->
+<view class="order-page">
+  <!-- 标签栏 -->
+  <view class="tabs-bar">
+    <view 
+      class="tab-item {{currentTab === item.key ? 'active' : ''}}" 
+      wx:for="{{tabs}}" 
+      wx:key="key"
+      bindtap="onTabChange"
+      data-key="{{item.key}}"
+    >
+      <text>{{item.name}}</text>
+    </view>
+  </view>
+
+  <!-- 订单列表 -->
+  <scroll-view class="order-list" scroll-y>
+    <view class="order-item card" wx:for="{{orders}}" wx:key="id" bindtap="onOrderTap" data-id="{{item.id}}">
+      <!-- 订单头部 -->
+      <view class="order-header">
+        <text class="order-no">订单号: {{item.orderNo}}</text>
+        <text class="order-status {{item.statusClass}}">{{item.statusText}}</text>
+      </view>
+      
+      <!-- 商品列表 -->
+      <view class="order-goods">
+        <view class="goods-item" wx:for="{{item.items}}" wx:for-item="goods" wx:key="id">
+          <image class="goods-image" src="{{goods.productImage || goods.image || '/images/placeholder.png'}}" mode="aspectFill"></image>
+          <view class="goods-info">
+            <text class="goods-name text-ellipsis">{{goods.productName}}</text>
+            <text class="goods-spec" wx:if="{{goods.specValue}}">{{goods.specName}}: {{goods.specValue}}</text>
+            <view class="goods-meta">
+              <text class="goods-price">¥{{goods.price}}</text>
+              <text class="goods-quantity">x{{goods.quantity}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+      
+      <!-- 订单底部 -->
+      <view class="order-footer">
+        <view class="order-info">
+          <text class="order-time">{{item.createdAtText}}</text>
+          <text class="order-total">共{{item.items.length}}件商品 合计: <text class="total-price">¥{{item.totalAmountText}}</text></text>
+        </view>
+        
+        <!-- 操作按钮 -->
+        <view class="order-actions">
+          <view class="action-btn cancel" wx:if="{{item.status === 0}}" catchtap="onCancelOrder" data-id="{{item.id}}">取消订单</view>
+          <view class="action-btn pay" wx:if="{{item.status === 0}}" catchtap="onPayOrder" data-id="{{item.id}}">去支付</view>
+          <view class="action-btn refund" wx:if="{{item.status === 1 || item.status === 2}}" catchtap="onApplyRefund" data-id="{{item.id}}">申请退款</view>
+          <view class="action-btn confirm" wx:if="{{item.status === 2}}" catchtap="onConfirmOrder" data-id="{{item.id}}">确认收货</view>
+          <view class="action-btn review" wx:if="{{item.status === 3}}" catchtap="onReviewOrder" data-id="{{item.id}}">评价</view>
+          <view class="action-btn delete" wx:if="{{item.status === 3 || item.status === 4 || item.status === 5}}" catchtap="onDeleteOrder" data-id="{{item.id}}">删除订单</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 加载状态 -->
+    <view class="loading" wx:if="{{loading}}">
+      <text>加载中...</text>
+    </view>
+
+    <!-- 没有更多 -->
+    <view class="no-more" wx:if="{{!hasMore && orders.length > 0}}">
+      <text>没有更多了</text>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{!loading && orders.length === 0}}">
+      <text>📦</text>
+      <text>暂无订单</text>
+    </view>
+  </scroll-view>
+</view>

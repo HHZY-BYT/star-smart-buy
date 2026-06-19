@@ -1,0 +1,59 @@
+<!--pages/my-reviews/my-reviews.wxml-->
+<view class="my-reviews-page">
+  <!-- 评价列表 -->
+  <view class="review-item card" wx:for="{{reviews}}" wx:key="id">
+    <!-- 商品信息 -->
+    <view class="product-info" bindtap="onProductTap" data-id="{{item.productId}}">
+      <text class="product-name">📦 {{item.productName || '商品'}}</text>
+    </view>
+
+    <!-- 评分 -->
+    <view class="rating-row">
+      <view class="stars">
+        <text class="star" wx:for="{{item.stars}}" wx:for-item="filled" wx:key="index">{{filled ? '★' : '☆'}}</text>
+      </view>
+      <text class="review-time">{{item.createdAtText}}</text>
+    </view>
+
+    <!-- 评价内容 -->
+    <view class="review-content" wx:if="{{item.content}}">{{item.content}}</view>
+
+    <!-- 评价图片 -->
+    <view class="review-images" wx:if="{{item.imageList.length > 0}}">
+      <image 
+        class="review-image" 
+        wx:for="{{item.imageList}}" 
+        wx:for-item="img" 
+        wx:key="index"
+        src="{{img}}" 
+        mode="aspectFill"
+        bindtap="onPreviewImage"
+        data-url="{{img}}"
+        data-index="{{index}}"
+      ></image>
+    </view>
+
+    <!-- 商家回复 -->
+    <view class="admin-reply" wx:if="{{item.reply}}">
+      <text class="admin-reply-tag">商家回复：</text>
+      <text>{{item.reply}}</text>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 没有更多 -->
+  <view class="no-more" wx:if="{{!hasMore && reviews.length > 0}}">
+    <text>没有更多了</text>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{!loading && reviews.length === 0}}">
+    <text class="empty-icon">📝</text>
+    <text class="empty-text">暂无评价</text>
+    <text class="empty-desc">完成订单后即可发表评价</text>
+  </view>
+</view>

@@ -1,0 +1,98 @@
+<!--pages/index/index.wxml-->
+<view class="container">
+  <!-- 搜索栏 -->
+  <view class="search-bar" bindtap="onSearch">
+    <view class="search-input">
+      <text class="icon-search">🔍</text>
+      <text class="placeholder">搜索商品</text>
+    </view>
+  </view>
+
+  <!-- 轮播图 -->
+  <swiper class="banner-swiper" indicator-dots autoplay="{{banners.length > 1}}" circular="{{banners.length > 1}}" interval="4000" wx:if="{{banners.length}}">
+    <swiper-item wx:for="{{banners}}" wx:key="id" bindtap="onBannerTap" data-link="{{item.link}}">
+      <image class="banner-image" src="{{item.image}}" mode="aspectFill"></image>
+    </swiper-item>
+  </swiper>
+
+  <!-- 公告栏 -->
+  <view class="notice-bar" wx:if="{{notices.length}}">
+    <text class="notice-icon">📢</text>
+    <swiper class="notice-swiper" vertical autoplay circular interval="3000">
+      <swiper-item wx:for="{{notices}}" wx:key="id" bindtap="onNoticeTap" data-index="{{index}}">
+        <text class="notice-text">{{item.title}}</text>
+      </swiper-item>
+    </swiper>
+  </view>
+
+  <!-- 分类入口 -->
+  <view class="category-section">
+    <view class="category-item" wx:for="{{categories}}" wx:key="id" bindtap="onCategoryTap" data-id="{{item.id}}">
+      <text class="category-icon">{{item.icon}}</text>
+      <text class="category-name">{{item.name}}</text>
+    </view>
+  </view>
+
+  <!-- AI助手入口 -->
+  <view class="ai-entry card" bindtap="onAiChat">
+    <view class="ai-icon">🤖</view>
+    <view class="ai-content">
+      <view class="ai-title">AI智能导购</view>
+      <view class="ai-desc">告诉我你的需求，为你推荐最合适的商品</view>
+    </view>
+    <view class="ai-arrow">›</view>
+  </view>
+
+  <!-- 热门商品 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">热门推荐</text>
+    </view>
+    <view class="hot-products">
+      <view class="product-item" wx:for="{{hotProducts}}" wx:key="id" bindtap="onProductTap" data-id="{{item.id}}">
+        <image class="product-image" src="{{item.images}}" mode="aspectFill"></image>
+        <view class="product-info">
+          <text class="product-name text-ellipsis-2">{{item.name}}</text>
+          <view class="product-price">
+            <text class="price">{{item.priceText}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 为你推荐 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">为你推荐</text>
+    </view>
+    <view class="product-list">
+      <view class="product-card" wx:for="{{recommendProducts}}" wx:key="id" bindtap="onProductTap" data-id="{{item.id}}">
+        <image class="product-card-image" src="{{item.images}}" mode="aspectFill"></image>
+        <view class="product-card-info">
+          <text class="product-card-name text-ellipsis-2">{{item.name}}</text>
+          <view class="product-card-bottom">
+            <text class="price">{{item.priceText}}</text>
+            <text class="product-sales">已售{{item.sales || 0}}件</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 没有更多 -->
+  <view class="no-more" wx:if="{{!hasMore && recommendProducts.length > 0}}">
+    <text>没有更多了</text>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{!loading && recommendProducts.length === 0}}">
+      <text>📦</text>
+      <text>暂无商品</text>
+    </view>
+</view>

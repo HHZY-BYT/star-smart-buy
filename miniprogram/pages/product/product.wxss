@@ -1,0 +1,418 @@
+/* pages/product/product.wxss */
+.product-page {
+  background-color: #f5f5f5;
+  padding-bottom: 120rpx;
+}
+
+/* 加载状态 */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: #999;
+}
+
+/* 商品图片轮播 */
+.product-swiper {
+  width: 100%;
+  height: 750rpx;
+}
+
+.product-image {
+  width: 100%;
+  height: 100%;
+}
+
+/* 商品信息 */
+.product-info {
+  margin: 20rpx;
+}
+
+.product-price-row {
+  display: flex;
+  align-items: baseline;
+}
+
+.product-price {
+  font-size: 48rpx;
+  color: #ff4d4f;
+  font-weight: bold;
+}
+
+.product-price::before {
+  content: '¥';
+  font-size: 32rpx;
+}
+
+.product-original-price {
+  font-size: 28rpx;
+  color: #999;
+  margin-left: 20rpx;
+  text-decoration: line-through;
+}
+
+.product-name {
+  font-size: 32rpx;
+  color: #333;
+  margin-top: 16rpx;
+  line-height: 1.4;
+}
+
+.product-meta {
+  display: flex;
+  margin-top: 16rpx;
+}
+
+.product-sales, .product-stock {
+  font-size: 24rpx;
+  color: #999;
+  margin-right: 20rpx;
+}
+
+/* 规格选择 */
+.spec-section {
+  display: flex;
+  align-items: center;
+  margin: 20rpx;
+}
+
+.spec-label {
+  font-size: 28rpx;
+  color: #666;
+  margin-right: 20rpx;
+}
+
+.spec-value {
+  flex: 1;
+  font-size: 28rpx;
+  color: #333;
+}
+
+.spec-placeholder {
+  color: #999;
+}
+
+.spec-arrow {
+  font-size: 32rpx;
+  color: #ccc;
+}
+
+/* 商品详情 */
+.detail-section, .review-section {
+  margin: 20rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+.detail-content {
+  font-size: 28rpx;
+  color: #666;
+  line-height: 1.6;
+}
+
+/* 用户评价 */
+.review-item {
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #e8e8e8;
+}
+
+.review-item:last-child {
+  border-bottom: none;
+}
+
+.review-header {
+  display: flex;
+  align-items: center;
+}
+
+.review-avatar {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 30rpx;
+  margin-right: 16rpx;
+}
+
+.review-name {
+  font-size: 26rpx;
+  color: #333;
+}
+
+.review-rating {
+  margin-left: 20rpx;
+  font-size: 20rpx;
+}
+
+.star-icon {
+  color: #ddd;
+}
+
+.star-icon.active {
+  color: #ff9800;
+}
+
+.review-content {
+  font-size: 28rpx;
+  color: #666;
+  margin-top: 16rpx;
+  line-height: 1.4;
+}
+
+.review-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+  margin-top: 16rpx;
+}
+
+.review-img {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 8rpx;
+}
+
+.review-time {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 12rpx;
+}
+
+.admin-reply {
+  margin-top: 16rpx;
+  padding: 16rpx 20rpx;
+  background: #f0f9eb;
+  border-radius: 8rpx;
+  font-size: 26rpx;
+  color: #67c23a;
+  line-height: 1.5;
+}
+
+.admin-reply-tag {
+  color: #409eff;
+  font-weight: bold;
+}
+
+.empty-reviews {
+  text-align: center;
+  padding: 40rpx;
+  color: #999;
+}
+
+/* 底部操作栏 */
+.product-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border-top: 1rpx solid #e8e8e8;
+  padding: 10rpx 20rpx;
+}
+
+.footer-icons {
+  display: flex;
+}
+
+.footer-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10rpx 20rpx;
+}
+
+.footer-icon text:first-child {
+  font-size: 40rpx;
+}
+
+.icon-text {
+  font-size: 22rpx;
+  color: #666;
+}
+
+.footer-buttons {
+  flex: 1;
+  display: flex;
+  margin-left: 20rpx;
+}
+
+.btn-cart {
+  flex: 1;
+  background-color: #ff9500;
+  color: #fff;
+  text-align: center;
+  padding: 24rpx;
+  border-radius: 40rpx 0 0 40rpx;
+  font-size: 28rpx;
+}
+
+.btn-buy {
+  flex: 1;
+  background-color: #ff4d4f;
+  color: #fff;
+  text-align: center;
+  padding: 24rpx;
+  border-radius: 0 40rpx 40rpx 0;
+  font-size: 28rpx;
+}
+
+/* 规格选择弹窗 */
+.spec-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+  visibility: hidden;
+}
+
+.spec-popup.show {
+  visibility: visible;
+}
+
+.spec-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.spec-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  border-radius: 24rpx 24rpx 0 0;
+  padding: 30rpx;
+  transform: translateY(100%);
+  transition: transform 0.3s;
+}
+
+.spec-popup.show .spec-content {
+  transform: translateY(0);
+}
+
+.spec-header {
+  display: flex;
+  align-items: center;
+  padding-bottom: 20rpx;
+  border-bottom: 1rpx solid #e8e8e8;
+}
+
+.spec-image {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 8rpx;
+  margin-right: 20rpx;
+}
+
+.spec-info {
+  flex: 1;
+}
+
+.spec-price {
+  font-size: 36rpx;
+  color: #ff4d4f;
+  font-weight: bold;
+}
+
+.spec-stock {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 8rpx;
+}
+
+.spec-selected {
+  font-size: 24rpx;
+  color: #666;
+  margin-top: 8rpx;
+}
+
+.spec-close {
+  font-size: 40rpx;
+  color: #999;
+  padding: 10rpx;
+}
+
+/* 规格列表 */
+.spec-list {
+  padding: 20rpx 0;
+}
+
+.spec-group-name {
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 16rpx;
+}
+
+.spec-options {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.spec-option {
+  padding: 16rpx 30rpx;
+  border: 2rpx solid #e8e8e8;
+  border-radius: 8rpx;
+  margin-right: 16rpx;
+  margin-bottom: 16rpx;
+  font-size: 26rpx;
+  color: #666;
+}
+
+.spec-option.selected {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  background-color: rgba(24, 144, 255, 0.1);
+}
+
+/* 数量选择 */
+.quantity-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 0;
+}
+
+.quantity-label {
+  font-size: 28rpx;
+  color: #333;
+}
+
+.quantity-control {
+  display: flex;
+  align-items: center;
+}
+
+.quantity-btn {
+  width: 50rpx;
+  height: 50rpx;
+  border: 1rpx solid #e8e8e8;
+  border-radius: 8rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 32rpx;
+  color: #666;
+}
+
+.quantity-num {
+  width: 80rpx;
+  text-align: center;
+  font-size: 28rpx;
+}
+
+/* 确认按钮 */
+.spec-confirm {
+  margin-top: 30rpx;
+}
