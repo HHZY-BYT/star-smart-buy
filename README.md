@@ -94,72 +94,65 @@
 
 ## 📂 项目结构
 
-`
-星智购电商平台/
-├── backend/                          # 后端目录
-│   ├── star-smart-buy-backend/       # Spring Boot 后端
-│   │   ├── src/main/java/com/star/smartbuy/
-│   │   │   ├── annotation/          # 自定义注解 (@OperLog)
-│   │   │   ├── aspect/              # AOP 切面 (操作日志)
-│   │   │   ├── common/              # 公共类 (Result, PageResult, BusinessException)
-│   │   │   ├── config/              # 配置类 (JWT, Redis, Security, WebSocket...)
-│   │   │   ├── controller/          # 控制器 (20+ REST API)
-│   │   │   ├── entity/              # 实体类
-│   │   │   ├── enums/               # 枚举类
-│   │   │   ├── mapper/              # MyBatis Mapper
-│   │   │   └── service/             # 服务层 (Interface + Impl)
-│   │   ├── src/main/resources/
-│   │   │   ├── application.yml      # 应用配置
-│   │   │   └── sql/                 # 数据库脚本
-│   │   │       ├── star_smart_buy.sql
-│   │   │       └── star_smart_buy_test.sql
-│   │   ├── src/test/java/           # 单元测试
-│   │   ├── pom.xml                  # Maven 配置
-│   │   └── .gitignore
-│   │
-│   └── star-smart-buy-admin/         # Vue 3 管理后台
-│       ├── src/
-│       │   ├── api/                 # API 请求封装
-│       │   ├── components/          # 公共组件
-│       │   ├── layouts/             # 布局组件
-│       │   ├── router/              # 路由配置
-│       │   ├── store/               # Pinia 状态管理
-│       │   ├── utils/               # 工具函数
-│       │   ├── views/               # 页面视图
-│       │   ├── App.vue
-│       │   └── main.js
-│       ├── index.html
-│       ├── package.json
-│       ├── vite.config.js
-│       └── .gitignore
-│
-├── miniprogram/                      # 微信小程序
-│   ├── api/                          # API 请求封装
-│   ├── images/                       # 静态资源
-│   ├── pages/                        # 页面 (15个)
-│   │   ├── index/                    # 首页
-│   │   ├── category/                 # 分类
-│   │   ├── product/                  # 商品详情
-│   │   ├── search/                   # 搜索
-│   │   ├── cart/                     # 购物车
-│   │   ├── order/                    # 订单列表
-│   │   ├── order-detail/             # 订单详情
-│   │   ├── create-order/             # 创建订单
-│   │   ├── address/                  # 地址管理
-│   │   ├── address-edit/             # 编辑地址
-│   │   ├── ai-chat/                  # AI 对话
-│   │   ├── review/                   # 发表评价
-│   │   ├── refund/                   # 退款申请
-│   │   ├── my-reviews/               # 我的评价
-│   │   └── user/                     # 个人中心
-│   ├── utils/                        # 工具函数
-│   ├── app.js / app.json / app.wxss  # 小程序入口
-│   └── .gitignore
-│
-├── docx_lib/                         # Word 文档生成工具库（独立依赖）
-├── README.md                         # 本文件
-└── .gitignore                        # 全局忽略规则
-`
+简单画一下三个模块各自负责什么、代码大概放在哪：
+
+### 🖥 后端 `backend/star-smart-buy-backend/`
+Java 21 + Spring Boot 3.5.9，Maven 构建，分层就是经典的 controller → service → mapper 那一套。
+
+| 包 / 目录 | 干嘛的 |
+|---|---|
+| `controller/` | 接口层，分了用户端和管理端两套 API，20+ 个 Controller |
+| `service/` | 业务逻辑，每个模块都有对应的接口 + 实现类 |
+| `mapper/` | MyBatis-Plus 的 Mapper，直接和数据库打交道 |
+| `entity/` | 实体类，13 张表一个个建好的 |
+| `dto/` | 几个登录、下单、AI 聊天用的传参对象 |
+| `common/` | 统一返回格式 `Result`、分页封装、自定义异常 |
+| `config/` | 各种配置：JWT、Redis、WebSocket、CORS、安全加密等 |
+| `annotation/` + `aspect/` | 自定义 `@OperLog` 注解 + AOP 自动记操作日志 |
+| `interceptor/` | JWT 拦截器，解析 token、判断用户 or 管理员 |
+| `resources/sql/` | 建库脚本（`star_smart_buy.sql`）+ 测试数据（`star_smart_buy_test.sql`） |
+| `resources/application.yml` | 所有配置都在这，数据库、Redis、JWT、文件上传等 |
+
+### 🎨 管理后台 `backend/star-smart-buy-admin/`
+Vue 3 + Vite + Element Plus + Pinia + ECharts，`npm run dev` 启动。
+
+| 目录 | 干嘛的 |
+|---|---|
+| `views/login/` | 管理员登录页 |
+| `views/dashboard/` | 首页数据概览、销售趋势图 |
+| `views/admin/` | 商品管理、订单管理、用户管理、分类、轮播图、公告、退款审核、评价管理、AI 配置、操作日志 |
+| `api/` | axios 封装 + 各模块的 API 调用 |
+| `store/` | Pinia 存管理员登录态 |
+| `router/` | 动态路由，根据角色权限加载菜单 |
+| `components/` | 复用的表格、表单、弹窗组件 |
+| `vite.config.js` | 代理配置，把 `/api` 转发到后端 8080 |
+
+### 📱 微信小程序 `miniprogram/`
+原生框架，一共 15 个页面，AppID 在 `project.config.json` 里改。
+
+| 页面 | 路径 |
+|---|---|
+| 首页 | `pages/index/` |
+| 分类 | `pages/category/` |
+| 搜索 | `pages/search/` |
+| 商品详情 | `pages/product/` |
+| 购物车 | `pages/cart/` |
+| 创建订单 | `pages/create-order/` |
+| 订单列表 | `pages/order/` |
+| 订单详情 | `pages/order-detail/` |
+| 收货地址 | `pages/address/` |
+| 编辑地址 | `pages/address-edit/` |
+| 发表评价 | `pages/review/` |
+| 我的评价 | `pages/my-reviews/` |
+| 退款申请 | `pages/refund/` |
+| AI 助手 | `pages/ai-chat/` |
+| 个人中心 | `pages/user/` |
+| API 封装 | `api/` 目录下按模块拆了 7 个 js 文件 |
+| 工具函数 | `utils/request.js` 封装 wx.request，`utils/util.js` 杂项工具 |
+
+### 🧩 其他
+- `docx_lib/` — 一个独立的 Word 文档生成库，管理端导出报表用，不算项目主体代码
+- `.gitignore` — 全局忽略 node_modules、target、uploads、.idea 等
 
 ---
 
