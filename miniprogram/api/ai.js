@@ -3,7 +3,7 @@ const { get, post } = require('../utils/request')
 
 /**
  * AI聊天
- * @param {Object} data 聊天数据 { message, sessionId }
+ * @param {Object} data 聊天数据 { message, sessionId, history? }
  * @returns {Promise}
  */
 const chat = (data) => {
@@ -12,11 +12,14 @@ const chat = (data) => {
 
 /**
  * AI推荐商品
- * @param {string} requirement 用户需求
+ * @param {Object} data 推荐数据 { requirement, history?, sessionId? }
  * @returns {Promise}
  */
-const recommend = (requirement) => {
-  return get('/ai/recommend', { requirement })
+const recommend = (data) => {
+  if (typeof data === 'string') {
+    data = { requirement: data }
+  }
+  return post('/ai/recommend', data)
 }
 
 module.exports = {

@@ -48,7 +48,7 @@
     "disableSWC": true
   },
   "compileType": "miniprogram",
-  "libVersion": "3.3.4",
+  "libVersion": "3.10.3",
   "appid": "wx025a536b1050fb48",
   "projectname": "star-smart-buy-miniprogram",
   "condition": {},

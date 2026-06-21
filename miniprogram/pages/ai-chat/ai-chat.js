@@ -58,7 +58,7 @@ Page({
 
   // 发送消息
   async onSend() {
-    const { inputText, sessionId } = this.data
+    const { inputText, sessionId, messages } = this.data
     
     if (!inputText.trim()) {
       wx.showToast({ title: '请输入内容', icon: 'none' })
@@ -69,51 +69,71 @@ Page({
     this.addMessage('user', inputText)
     this.setData({ inputText: '', loading: true })
     
+    // 构建历史消息用于上下文记忆
+    const recentMessages = messages.slice(-10).map(m => ({
+      role: m.type === 'user' ? 'user' : 'assistant',
+      content: m.content
+    }))
+    
     try {
       // 检测是否是推荐请求（更精确的正则，避免"就要""想要"等误判）
       const isRecommendRequest = /^推荐|^帮我推荐|推荐.*[手机笔记本平板耳机]|预算.*[买选]|.*以内.*推荐|.*以下.*推荐|.*左右.*(买|选|推荐)|我想买|想买个|有什么.*推荐|哪个.*好/.test(inputText)
       
       if (isRecommendRequest) {
-        // 获取推荐
-        const reply = await recommend(inputText)
+        // 获取推荐 - 传入历史消息保持上下文
+        const reply = await recommend({ 
+          requirement: inputText,
+          history: recentMessages,
+          sessionId 
+        })
         
         // 从AI回复中提取提到的商品名称，再搜索展示
         let products = []
         try {
-          // 优先从AI回复文本中提取商品名
           const extractedNames = this.extractProductNamesFromReply(reply)
+          console.log('提取到的商品名:', extractedNames)
+          
           if (extractedNames.length > 0) {
-            // 用提取到的商品名精确搜索
-            for (const name of extractedNames) {
+            // 并行搜索所有商品
+            const searchResults = await Promise.allSettled(
+              extractedNames.map(name => getProductList({ page: 1, size: 3, keyword: name }))
+            )
+            
+            for (const result of searchResults) {
+              if (result.status === 'fulfilled' && result.value.records && result.value.records.length > 0) {
+                products.push({
+                  ...result.value.records[0],
+                  priceText: formatPrice(result.value.records[0].price)
+                })
+              }
+            }
+          }
+          
+          // 如果搜到的商品不足3个，用关键词补充搜索
+          if (products.length < 3) {
+            const keyword = this.extractKeyword(inputText)
+            if (keyword && !products.some(p => p.name.includes(keyword))) {
               try {
-                const res = await getProductList({ page: 1, size: 2, keyword: name })
-                if (res.records && res.records.length > 0) {
-                  products.push({
-                    ...res.records[0],
-                    priceText: formatPrice(res.records[0].price)
-                  })
+                const res = await getProductList({ page: 1, size: 3, keyword })
+                for (const item of res.records || []) {
+                  if (!products.find(p => p.id === item.id)) {
+                    products.push({ ...item, priceText: formatPrice(item.price) })
+                    if (products.length >= 3) break
+                  }
                 }
               } catch (e) { /* ignore */ }
-            }
-          } else {
-            // 回退：用关键词搜索
-            const keyword = this.extractKeyword(inputText)
-            if (keyword) {
-              const res = await getProductList({ page: 1, size: 3, keyword })
-              products = (res.records || []).map(item => ({
-                ...item,
-                priceText: formatPrice(item.price)
-              }))
             }
           }
         } catch (e) {
           console.log('获取商品失败:', e)
         }
         
+        // 去重并限制最多3个
+        products = products.filter((item, index, self) => index === self.findIndex(p => p.id === item.id)).slice(0, 3)
         this.addMessage('ai', reply, products)
       } else {
-        // 普通聊天
-        const res = await chat({ message: inputText, sessionId })
+        // 普通聊天 - 传入历史消息保持上下文
+        const res = await chat({ message: inputText, sessionId, history: recentMessages })
         this.addMessage('ai', res.reply)
       }
       
@@ -143,24 +163,35 @@ Page({
   extractProductNamesFromReply(reply) {
     if (!reply) return []
     const names = []
-    // 匹配常见商品名模式：品牌 + 型号（如 "vivo X300 Pro"、"iPhone 15 Pro Max"）
+    // 更全面的商品名匹配模式
     const patterns = [
-      /(vivo\s+\w+[\s\w]*)/gi,
-      /(iPhone\s+\d+[\s\w]*)/gi,
-      /(\w+Mate\s*\d+[\s\w]*)/gi,
-      /(小米?\s*\d+[\s\w]*|Xiaomi\s*[\s\w]*)/gi,
-      /(华为\s*[\s\w]+|\w+Pro[\s\w]*)/gi,
-      /(iPad\s*[\w\s]+)/gi,
-      /(MacBook\s*[\w\s]+)/gi,
-      /(索尼\s*[\s\w]+)/gi
+      /小米\d+\s*[\w]*(?:Ultra|Pro|Max|Plus)?(?:\s*\d+\s*(?:GB|G))?/gi,
+      /(vivo\s+[\w]+)/gi,
+      /(iPhone\s+[\d\w\s]+?)(?:[，。！？]|$|价格)/gi,
+      /(华为[\s\S]*?Mate\s*[\d\w]*)/gi,
+      /(华为[\s\S]*?(?:Pro|Max)[\s\w]*)/gi,
+      /iPad\s*[\w\s]*/gi,
+      /MacBook\s*[\w\s]*/gi,
+      /(索尼[\s\w]+)/gi,
+      /(小米[\s\S]*?(?:路由器|平板|耳机|手表|显示器|电视)[\s\w]*)/gi,
+      /(小米[\s\S]*?\d+\s*(?:GB|G))/gi
     ]
     for (const pattern of patterns) {
       const matches = reply.match(pattern)
       if (matches) {
-        names.push(...matches.map(m => m.trim()))
+        matches.forEach(m => {
+          const cleaned = m.trim()
+            .replace(/^[**""]|[**""]$/g, '')
+            .replace(/[**]/g, '')
+            .trim()
+          if (cleaned.length > 3 && !names.includes(cleaned)) {
+            names.push(cleaned)
+          }
+        })
       }
     }
-    return [...new Set(names)].slice(0, 3)
+    console.log('提取到的原始商品名:', names)
+    return [...new Set(names)].slice(0, 5)
   },
 
   // 点击推荐商品

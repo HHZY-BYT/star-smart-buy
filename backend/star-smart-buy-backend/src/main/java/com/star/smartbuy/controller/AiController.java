@@ -3,6 +3,7 @@ package com.star.smartbuy.controller;
 import com.star.smartbuy.common.BusinessException;
 import com.star.smartbuy.common.Result;
 import com.star.smartbuy.dto.AiChatDTO;
+import com.star.smartbuy.dto.AiRecommendDTO;
 import com.star.smartbuy.entity.AiConfigEntity;
 import com.star.smartbuy.entity.Product;
 import com.star.smartbuy.mapper.AiConfigMapper;
@@ -105,6 +106,7 @@ public class AiController {
     public Result<Map<String, String>> chat(@RequestBody AiChatDTO dto) {
         String message = dto.getMessage();
         String sessionId = dto.getSessionId();
+        List<Map<String, String>> history = dto.getHistory();
 
         try {
             AiConfigEntity config = getActiveConfig();
@@ -113,6 +115,16 @@ public class AiController {
             // 添加系统提示词
             if (config.getSystemPrompt() != null && !config.getSystemPrompt().isEmpty()) {
                 messages.add(Map.of("role", "system", "content", config.getSystemPrompt()));
+            }
+            // 添加历史消息，保持上下文记忆
+            if (history != null && !history.isEmpty()) {
+                for (Map<String, String> h : history) {
+                    String role = h.get("role");
+                    String content = h.get("content");
+                    if (role != null && content != null && !content.isEmpty()) {
+                        messages.add(Map.of("role", role, "content", content));
+                    }
+                }
             }
             messages.add(Map.of("role", "user", "content", message));
 
@@ -138,8 +150,10 @@ public class AiController {
      * @param requirement 用户需求描述（如"预算3000，想要拍照好的手机"）
      * @return AI 生成的推荐文本
      */
-    @GetMapping("/recommend")
-    public Result<String> recommend(@RequestParam String requirement) {
+    @PostMapping("/recommend")
+    public Result<String> recommend(@RequestBody AiRecommendDTO dto) {
+        String requirement = dto.getRequirement();
+        List<Map<String, String>> history = dto.getHistory();
         try {
             AiConfigEntity config = getActiveConfig();
 
@@ -152,7 +166,8 @@ public class AiController {
                 "2. 如果用户指定了预算（如5000元以内），必须严格只推荐价格不超过预算的商品，超预算的一律不要推荐。\n" +
                 "3. 如果预算范围内没有合适的商品，请如实告知用户，不要强行推荐超预算的商品。\n" +
                 "4. 推荐格式：简要说明推荐理由（结合预算和需求）+ 商品名称 + 价格。\n" +
-                "5. 每次最多推荐3个最匹配的商品。";
+                "5. 每次最多推荐3个最匹配的商品。\n" +
+                "6. 请结合历史对话上下文（若有）给出更连贯的回答。";
 
             // 获取所有上架商品
             var productData = productService.getProductList(1, 50, null, null);
@@ -193,6 +208,16 @@ public class AiController {
 
             List<Map<String, String>> messages = new ArrayList<>();
             messages.add(Map.of("role", "system", "content", systemPrompt));
+            // 添加历史消息，保持上下文记忆
+            if (history != null && !history.isEmpty()) {
+                for (Map<String, String> h : history) {
+                    String role = h.get("role");
+                    String content = h.get("content");
+                    if (role != null && content != null && !content.isEmpty()) {
+                        messages.add(Map.of("role", role, "content", content));
+                    }
+                }
+            }
             messages.add(Map.of("role", "user", "content", userPrompt));
 
             // 推荐场景使用较低temperature保证严谨性

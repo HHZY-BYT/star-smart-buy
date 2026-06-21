@@ -21,12 +21,11 @@ public class ShoppingCart {
     /** 商品ID */
     private Long productId;
 
-    /** 规格ID（兼容旧数据） */
+    /** 规格ID */
     private Long specId;
 
-    /** 多规格ID（逗号分隔，如 "33,37"，新字段） */
+    /** 多规格ID */
     private String specIds;
-
     /** 数量 */
     private Integer quantity;
 

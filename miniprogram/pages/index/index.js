@@ -27,6 +27,12 @@ Page({
     this.loadProducts()
   },
 
+  onShow() {
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+      this.getTabBar().setData({ selected: 0 })
+    }
+  },
+
   onPullDownRefresh() {
     this.setData({ page: 1, hasMore: true })
     Promise.all([this.loadHomeData(), this.loadProducts()]).then(() => {

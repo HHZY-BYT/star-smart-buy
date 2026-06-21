@@ -23,6 +23,9 @@ Page({
   },
 
   onShow() {
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+      this.getTabBar().setData({ selected: 1 })
+    }
     // 处理从首页点击分类跳转过来的情况
     const app = getApp()
     const categoryId = app.globalData.selectCategoryId
