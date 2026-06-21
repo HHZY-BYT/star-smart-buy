@@ -14,7 +14,7 @@
   </view>
 
   <!-- 订单列表 -->
-  <scroll-view class="order-list" scroll-y>
+  <scroll-view class="order-list" scroll-y bindscrolltolower="onScrollToLower" lower-threshold="100">
     <view class="order-item card" wx:for="{{orders}}" wx:key="id" bindtap="onOrderTap" data-id="{{item.id}}">
       <!-- 订单头部 -->
       <view class="order-header">

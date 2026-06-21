@@ -119,15 +119,17 @@ public class ReviewServiceImpl extends ServiceImpl<ProductReviewMapper, ProductR
 
         Set<Long> userIds = reviews.stream()
                 .map(ProductReview::getUserId).collect(Collectors.toSet());
-        Map<Long, String> nameMap = userMapper.selectBatchIds(userIds).stream()
-                .collect(Collectors.toMap(User::getId, User::getNickname, (a, b) -> a));
+        Map<Long, User> userMap = userMapper.selectBatchIds(userIds).stream()
+                .collect(Collectors.toMap(User::getId, u -> u, (a, b) -> a));
 
         return reviews.stream().map(r -> {
             Map<String, Object> map = new HashMap<>();
+            User user = userMap.get(r.getUserId());
             map.put("id", r.getId());
             map.put("productId", r.getProductId());
             map.put("userId", r.getUserId());
-            map.put("userName", nameMap.getOrDefault(r.getUserId(), r.getUserName()));
+            map.put("userName", user != null ? user.getNickname() : r.getUserName());
+            map.put("userAvatar", user != null ? user.getAvatar() : null);
             map.put("rating", r.getRating());
             map.put("content", r.getContent());
             map.put("images", r.getImages());

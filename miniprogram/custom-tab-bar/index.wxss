@@ -4,7 +4,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  height: 110rpx;
+  height: 100rpx;
   background-color: #ffffff;
   border-top: 1rpx solid #e8e8e8;
   padding-bottom: constant(safe-area-inset-bottom);
@@ -22,7 +22,7 @@
 }
 
 .tab-icon {
-  font-size: 48rpx;
+  font-size: 40rpx;
   line-height: 1;
 }
 

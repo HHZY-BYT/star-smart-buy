@@ -10,6 +10,7 @@
 .cart-list {
   flex: 1;
   padding: 20rpx;
+  padding-bottom: 280rpx;
 }
 
 /* 购物车项 */
@@ -138,13 +139,18 @@
 
 /* 底部结算栏 */
 .cart-footer {
+  position: fixed;
+  bottom: 150rpx;
+  left: 0;
+  right: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 24rpx 32rpx;
+  padding: 16rpx 32rpx;
   background: linear-gradient(135deg, #fff 0%, #fefefe 100%);
   border-top: 1rpx solid #f0f0f0;
-  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.04);
+  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.08);
+  z-index: 998;
 }
 
 .footer-left {

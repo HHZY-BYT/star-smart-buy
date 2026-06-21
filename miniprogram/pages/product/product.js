@@ -9,6 +9,11 @@ Page({
     specs: [],
     specGroups: [],        // 按 specName 分组后的规格 [{groupName: "颜色", options: [{id, specValue, selected}]}]
     reviews: [],
+    reviewTotal: 0,        // 评价总数
+    reviewPage: 1,
+    reviewSize: 5,
+    reviewHasMore: true,
+    reviewLoading: false,
     currentSpec: {},       // 改为对象: { "颜色": {id, specValue}, "内存": {id, specValue} }
     quantity: 1,
     loading: true,
@@ -83,7 +88,8 @@ Page({
   // 加载评价
   async loadReviews(productId) {
     try {
-      const reviews = await getProductReviews(productId, { page: 1, size: 5 })
+      this.setData({ reviewLoading: true })
+      const reviews = await getProductReviews(productId, { page: 1, size: this.data.reviewSize })
       const records = (reviews.records || []).map(review => {
         // 处理评价图片
         if (review.images) {
@@ -94,10 +100,42 @@ Page({
         return review
       })
       this.setData({
-        reviews: records
+        reviews: records,
+        reviewTotal: reviews.total || records.length,
+        reviewPage: 1,
+        reviewHasMore: records.length >= this.data.reviewSize,
+        reviewLoading: false
       })
     } catch (error) {
       console.error('加载评价失败:', error)
+      this.setData({ reviewLoading: false })
+    }
+  },
+
+  // 加载更多评价
+  async loadMoreReviews() {
+    if (!this.data.reviewHasMore || this.data.reviewLoading) return
+    const { product, reviewPage, reviewSize, reviews } = this.data
+    try {
+      this.setData({ reviewLoading: true })
+      const res = await getProductReviews(product.id, { page: reviewPage + 1, size: reviewSize })
+      const newRecords = (res.records || []).map(review => {
+        if (review.images) {
+          review.imageList = review.images.split(',').map(img => img.trim()).filter(img => img)
+        } else {
+          review.imageList = []
+        }
+        return review
+      })
+      this.setData({
+        reviews: [...reviews, ...newRecords],
+        reviewPage: reviewPage + 1,
+        reviewHasMore: newRecords.length >= reviewSize,
+        reviewLoading: false
+      })
+    } catch (error) {
+      console.error('加载更多评价失败:', error)
+      this.setData({ reviewLoading: false })
     }
   },
 

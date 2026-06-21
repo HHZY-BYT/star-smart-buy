@@ -41,7 +41,8 @@ Page({
     })
   },
 
-  onReachBottom() {
+  // scroll-view 滚动到底部触发加载更多
+  onScrollToLower() {
     if (this.data.hasMore && !this.data.loading) {
       this.loadMore()
     }

@@ -208,5 +208,12 @@ Page({
     wx.navigateTo({
       url: `/pages/product/product?id=${productId}`
     })
+  },
+
+  // 去逛逛（跳转首页）
+  onGoShopping() {
+    wx.switchTab({
+      url: '/pages/index/index'
+    })
   }
 })

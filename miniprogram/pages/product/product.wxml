@@ -57,12 +57,15 @@
 
     <!-- 用户评价 -->
     <view class="review-section card">
-      <view class="section-title">用户评价 ({{reviews.length}})</view>
+      <view class="section-title">用户评价 ({{reviewTotal}})</view>
       
       <view class="review-list" wx:if="{{reviews.length > 0}}">
         <view class="review-item" wx:for="{{reviews}}" wx:key="id">
           <view class="review-header">
-            <image class="review-avatar" src="{{item.userAvatar || 'https://neeko-copilot.bytedance.net/api/text_to_image?prompt=user%20avatar%20placeholder%20gray%20silhouette&image_size=square'}}"></image>
+            <view class="review-avatar-wrap">
+              <image class="review-avatar" src="{{item.userAvatar}}" mode="aspectFill" wx:if="{{item.userAvatar}}"></image>
+              <text class="review-avatar-placeholder" wx:else>{{item.userName[0] || '?'}}</text>
+            </view>
             <text class="review-name">{{item.userName}}</text>
             <view class="review-rating">
               <text class="star-icon {{star <= item.rating ? 'active' : ''}}" wx:for="{{[1,2,3,4,5]}}" wx:for-item="star" wx:key="*this">{{star <= item.rating ? '★' : '☆'}}</text>
@@ -83,6 +86,15 @@
       
       <view class="empty-reviews" wx:else>
         <text>暂无评价</text>
+      </view>
+
+      <!-- 查看更多评价 -->
+      <view class="review-more" wx:if="{{reviews.length > 0 && reviewHasMore}}" bindtap="loadMoreReviews">
+        <text wx:if="{{!reviewLoading}}">查看更多评价 ›</text>
+        <text wx:else>加载中...</text>
+      </view>
+      <view class="review-more no-more" wx:if="{{reviews.length > 0 && !reviewHasMore}}">
+        <text>没有更多评价了</text>
       </view>
     </view>
   </block>

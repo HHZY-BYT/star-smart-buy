@@ -15,7 +15,7 @@
   </scroll-view>
 
   <!-- 商品列表 -->
-  <scroll-view class="product-content" scroll-y>
+  <scroll-view class="product-content" scroll-y bindscrolltolower="onScrollToLower" lower-threshold="100">
     <!-- 子分类标签 -->
     <view class="sub-category-bar" wx:if="{{subCategories.length > 0}}">
       <scroll-view class="sub-scroll" scroll-x>
