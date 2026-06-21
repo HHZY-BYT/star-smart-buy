@@ -67,9 +67,6 @@ public class WebConfig implements WebMvcConfigurer {
                         "/categories/**",
                         "/home",
                         "/home/**",
-                        // "/review/*" 不再整体排除，由 JwtInterceptor 内部判断：
-                        // GET /review/{数字ID} → 公开访问（查看商品评价）
-                        // GET /review/my、POST /review → 需要登录
                         "/ai/chat",
                         "/ai/recommend",
                         "/ws/**",
