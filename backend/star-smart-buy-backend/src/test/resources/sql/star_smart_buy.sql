@@ -11,7 +11,7 @@
  Target Server Version : 80045 (8.0.45)
  File Encoding         : 65001
 
- Date: 23/06/2026 16:14:10
+ Date: 23/06/2026 17:23:19
 */
 
 SET NAMES utf8mb4;
@@ -238,7 +238,7 @@ CREATE TABLE `operation_log`  (
   INDEX `idx_status`(`status` ASC) USING BTREE,
   INDEX `idx_created_at`(`created_at` ASC) USING BTREE,
   CONSTRAINT `fk_operation_log_admin` FOREIGN KEY (`operator_id`) REFERENCES `admin` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 62 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '操作日志表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 63 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '操作日志表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of operation_log
@@ -304,6 +304,7 @@ INSERT INTO `operation_log` VALUES (58, 1, '张三', 'admin', 'UPDATE', 'PRODUCT
 INSERT INTO `operation_log` VALUES (59, 1, '张三', 'admin', 'UPDATE', 'REFUND', '处理退款', 'com.star.smartbuy.controller.AdminRefundController.process', '/api/admin/refunds/10/process', 'PUT', '[10,{\"status\":1,\"reason\":\"同意退款\"}]', '{\"code\":200,\"message\":\"success\",\"data\":null}', '127.0.0.1', NULL, 1, NULL, 24, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 Edg/149.0.0.0', '2026-06-21 20:34:18');
 INSERT INTO `operation_log` VALUES (60, 1, '张三', 'admin', 'UPDATE', 'ORDER', '订单发货', 'com.star.smartbuy.controller.AdminOrderController.ship', '/api/admin/orders/46/ship', 'PUT', '[46]', '{\"code\":200,\"message\":\"success\",\"data\":null}', '127.0.0.1', NULL, 1, NULL, 8, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 Edg/149.0.0.0', '2026-06-21 20:34:26');
 INSERT INTO `operation_log` VALUES (61, 1, '张三', 'admin', 'UPDATE', 'REVIEW', '回复评价', 'com.star.smartbuy.controller.AdminReviewController.reply', '/api/admin/reviews/23/reply', 'PUT', '[23,{\"reply\":\"那当然了\"}]', '{\"code\":200,\"message\":\"success\",\"data\":null}', '127.0.0.1', NULL, 1, NULL, 6, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 Edg/149.0.0.0', '2026-06-21 20:35:51');
+INSERT INTO `operation_log` VALUES (62, NULL, '匿名用户', 'ANONYMOUS', 'LOGIN', 'SETTING', '管理员登录', 'com.star.smartbuy.controller.AdminController.login', '/api/admin/login', 'POST', '[{\"username\":\"admin\",\"password\":\"admin123\"}]', '{\"code\":200,\"message\":\"success\",\"data\":{\"adminId\":1,\"token\":\"eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzgyMjA0MDAxLCJleHAiOjE3ODIyOTA0MDF9.GzZ8dYA_nyhrndUkALVAhI9Zq5V3lanAfpyRqBkRX9QmTG6iG-v4qPT0KkhSjxCG\",\"username\":\"admin\"}}', '127.0.0.1', NULL, 1, NULL, 95, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 Edg/149.0.0.0', '2026-06-23 16:40:01');
 
 -- ----------------------------
 -- Table structure for order_item
@@ -754,7 +755,9 @@ CREATE TABLE `refund`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_order`(`order_id` ASC) USING BTREE,
   INDEX `idx_user`(`user_id` ASC) USING BTREE,
-  INDEX `idx_status`(`status` ASC) USING BTREE
+  INDEX `idx_status`(`status` ASC) USING BTREE,
+  CONSTRAINT `fk_refund_order` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `fk_refund_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '退款/售后表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -780,7 +783,9 @@ CREATE TABLE `shopping_cart`  (
   `spec_ids` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '多规格id逗号分隔',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_user`(`user_id` ASC) USING BTREE,
-  INDEX `idx_product`(`product_id` ASC) USING BTREE
+  INDEX `idx_product`(`product_id` ASC) USING BTREE,
+  CONSTRAINT `fk_cart_product` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `fk_cart_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB AUTO_INCREMENT = 22 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '购物车表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
