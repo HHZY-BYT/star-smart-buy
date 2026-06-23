@@ -103,7 +103,7 @@ CREATE TABLE `ai_config`  (
 -- ----------------------------
 -- Records of ai_config
 -- ----------------------------
-INSERT INTO `ai_config` VALUES (2, 'deepseek', 'your apikey', 'https://api.deepseek.com', 'deepseek-chat', 0.7, 2048, '你是星智购的智能导购助手，专门帮助用户推荐和销售3C数码产品。请用简洁专业的语气回答。', 1, '2026-06-14 21:20:33', '2026-06-14 21:20:33');
+INSERT INTO `ai_config` VALUES (2, 'deepseek', 'DEEPSEEK_KEY_PLACEHOLDER', 'https://api.deepseek.com', 'deepseek-chat', 0.7, 2048, '你是星智购的智能导购助手，专门帮助用户推荐和销售3C数码产品。请用简洁专业的语气回答。', 1, '2026-06-14 21:20:33', '2026-06-14 21:20:33');
 
 -- ----------------------------
 -- Table structure for banner
